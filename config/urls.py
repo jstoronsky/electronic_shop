@@ -25,7 +25,7 @@ from config import settings
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="API документация по для приложения по размещению объявлений",
+        title="API документация по платформе сети по продаже электроники",
         default_version='v1',
         description="",
         contact=openapi.Contact(email="jstoronsky@gmail.com"),
