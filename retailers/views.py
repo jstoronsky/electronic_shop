@@ -8,6 +8,9 @@ from rest_framework.permissions import IsAuthenticated
 
 
 class RetailerViewSets(viewsets.ModelViewSet):
+    """
+    Вьюсеты для ритейлера, настроена фильтрация по стране
+    """
     queryset = Retailer.objects.all()
     permission_classes = [IsAuthenticated, IsActive]
     filter_backends = [rest_framework.DjangoFilterBackend]
@@ -21,6 +24,9 @@ class RetailerViewSets(viewsets.ModelViewSet):
 
 
 class ProductViewSets(viewsets.ModelViewSet):
+    """
+    Вьюсеты для продукта
+    """
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     permission_classes = [IsAuthenticated, IsActive]

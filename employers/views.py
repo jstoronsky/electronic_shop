@@ -3,7 +3,6 @@ from django.http import Http404
 from rest_framework import generics
 from employers.serializers import UserSerializer
 from employers.models import Employee
-from employers.permissions import IsSuperUser
 from rest_framework.permissions import IsAuthenticated
 # Create your views here.
 
@@ -16,16 +15,19 @@ class UserCreateAPIView(generics.CreateAPIView):
 
 
 class UserListAPIView(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
     queryset = Employee.objects.filter(is_active=True)
     serializer_class = UserSerializer
 
 
 class UserRetrieveAPIView(generics.RetrieveAPIView):
+    permission_classes = [IsAuthenticated]
     queryset = Employee.objects.filter(is_active=True)
     serializer_class = UserSerializer
 
 
 class UserMeAPIView(generics.RetrieveAPIView):
+    permission_classes = [IsAuthenticated]
     queryset = Employee.objects.all()
     serializer_class = UserSerializer
 

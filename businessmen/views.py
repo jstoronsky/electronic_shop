@@ -8,6 +8,9 @@ from django_filters import rest_framework
 
 
 class BusinessmanViewSets(viewsets.ModelViewSet):
+    """
+    Вьюсеты для предпринимателя, настроена фильтрация по стране
+    """
     queryset = Businessman.objects.all()
     permission_classes = [IsAuthenticated, IsActive]
     filter_backends = [rest_framework.DjangoFilterBackend]
@@ -21,6 +24,9 @@ class BusinessmanViewSets(viewsets.ModelViewSet):
 
 
 class ProductViewSets(viewsets.ModelViewSet):
+    """
+    Вьюсеты для продукта
+    """
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     permission_classes = [IsAuthenticated, IsActive]

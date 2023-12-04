@@ -8,6 +8,10 @@ from employers.models import NULLABLE
 # Create your models here.
 
 class Retailer(AbstractChain):
+    """
+    Модель ритейлера. При сохранении нового объекта данной модели происходит создание объекта в таблице-посреднике
+    Suppliers1, которая нужна для того, чтобы объединить модели для поля supplier.
+    """
     supplier = models.ForeignKey('chain.Suppliers2', on_delete=models.CASCADE, verbose_name='поставщик', **NULLABLE)
     debt = models.FloatField(verbose_name='долг перед поставщиком')
 
@@ -33,4 +37,7 @@ class Retailer(AbstractChain):
 
 
 class Product(AbstractProduct):
+    """
+    Модель продукта
+    """
     retailer = models.ForeignKey('retailer', on_delete=models.CASCADE, verbose_name='ритейлер', **NULLABLE)

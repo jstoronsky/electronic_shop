@@ -4,8 +4,8 @@ from businessmen.views import BusinessmanViewSets, ProductViewSets
 
 app_name = BusinessmenConfig.name
 router = DefaultRouter()
-router.register(r'businessmen', BusinessmanViewSets, basename='factory')
-router.register(r'product', ProductViewSets, basename='product')
+router.register(r'businessman', BusinessmanViewSets, basename='factory')
+router.register(r'product_businessman', ProductViewSets, basename='product')
 urlpatterns = [
 
 ] + router.urls

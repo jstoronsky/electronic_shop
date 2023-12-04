@@ -5,6 +5,9 @@ from employers.models import NULLABLE
 
 
 class AbstractChain(models.Model):
+    """
+    Абстрактная модель сети по продаже электроники
+    """
     name = models.CharField(max_length=35, verbose_name='название')
     email = models.EmailField(verbose_name='почта')
     country = models.CharField(max_length=20, verbose_name='страна')
@@ -19,9 +22,12 @@ class AbstractChain(models.Model):
 
 
 class AbstractProduct(models.Model):
+    """
+    Абстрактная модель продукта
+    """
     name = models.CharField(max_length=35, verbose_name='название')
     model = models.CharField(max_length=50, verbose_name='модель')
-    release_date = models.DateTimeField(verbose_name='дата выхода продукта')
+    release_date = models.DateTimeField(verbose_name='дата выхода продукта', **NULLABLE)
     objects = models.Manager()
 
     class Meta:
@@ -31,6 +37,9 @@ class AbstractProduct(models.Model):
 
 
 class Factory(AbstractChain):
+    """
+    модель завода
+    """
     def __str__(self):
         return self.name
 
@@ -49,6 +58,10 @@ class Factory(AbstractChain):
 
 
 class Suppliers1(models.Model):
+    """
+    таблица-посредник Suppliers1, которая нужна для того, чтобы объединить модели для поля supplier. Используется для
+    модели предпринимателя
+    """
     factory = models.OneToOneField('factory', on_delete=models.CASCADE, **NULLABLE)
     retailer = models.OneToOneField('retailers.retailer', on_delete=models.CASCADE, **NULLABLE)
     objects = models.Manager()
@@ -61,6 +74,10 @@ class Suppliers1(models.Model):
 
 
 class Suppliers2(models.Model):
+    """
+    таблица-посредник Suppliers2, которая нужна для того, чтобы объединить модели для поля supplier. Используется для
+    модели ритейлера
+    """
     factory = models.OneToOneField('factory', on_delete=models.CASCADE, **NULLABLE)
     businessman = models.OneToOneField('businessmen.businessman', on_delete=models.CASCADE, **NULLABLE)
     objects = models.Manager()
@@ -73,4 +90,7 @@ class Suppliers2(models.Model):
 
 
 class Product(AbstractProduct):
+    """
+    модель продукта
+    """
     manufacturer = models.ForeignKey('factory', on_delete=models.CASCADE, verbose_name='производитель', **NULLABLE)

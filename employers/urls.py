@@ -13,5 +13,4 @@ urlpatterns = [
     path('', UserListAPIView.as_view(), name='users_list'),
     path('<int:pk>/', UserRetrieveAPIView.as_view(), name='users_detail'),
     path('me/', UserMeAPIView.as_view(), name='me')
-
 ]
