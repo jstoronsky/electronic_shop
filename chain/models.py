@@ -1,4 +1,3 @@
-from django.core.exceptions import ValidationError
 from django.db import models
 from employers.models import NULLABLE
 
@@ -36,56 +35,9 @@ class Factory(AbstractChain):
         verbose_name_plural = 'заводы'
 
 
-class Retailer(AbstractChain):
-    supplier = models.ForeignKey('suppliers2', on_delete=models.CASCADE, verbose_name='поставщик(завод)', **NULLABLE)
-    debt = models.FloatField(verbose_name='долг перед поставщиком')
-
-    def clean(self):
-        for supplier in Suppliers2.objects.all():
-            if self.supplier == supplier:
-                if supplier.businessman is not None:
-                    if supplier.businessman.supplier.retailer is not None and \
-                            supplier.businessman.supplier.retailer.name == self.name:
-                        raise ValidationError('You can not choose this supplier because you serve as supplier to it.')
-
-    def save(self, *args, **kwargs):
-        super(Retailer, self).save(*args, **kwargs)
-        if not Suppliers1.objects.filter(retailer=self).exists():
-            sup = Suppliers1.objects.create(retailer=self)
-            sup.save()
-
-    class Meta:
-        verbose_name = 'ритейлер'
-        verbose_name_plural = 'ритейлеры'
-
-
-class Businessman(AbstractChain):
-    supplier = models.ForeignKey('suppliers1', on_delete=models.CASCADE, verbose_name='поставщик(завод)', **NULLABLE)
-    debt = models.FloatField(verbose_name='долг перед поставщиком')
-    objects = models.Manager()
-
-    def clean(self):
-        for supplier in Suppliers1.objects.all():
-            if self.supplier == supplier:
-                if supplier.retailer is not None:
-                    if supplier.retailer.supplier.businessman is not None and \
-                            supplier.retailer.supplier.businessman.name == self.name:
-                        raise ValidationError('You can not choose this supplier because you serve as supplier to it.')
-
-    def save(self, *args, **kwargs):
-        super(Businessman, self).save(*args, **kwargs)
-        if not Suppliers2.objects.filter(businessman=self).exists():
-            sup = Suppliers2.objects.create(businessman=self)
-            sup.save()
-
-    class Meta:
-        verbose_name = 'предприниматель'
-        verbose_name_plural = 'предприниматели'
-
-
 class Suppliers1(models.Model):
     factory = models.OneToOneField('factory', on_delete=models.CASCADE, **NULLABLE)
-    retailer = models.OneToOneField('retailer', on_delete=models.CASCADE, **NULLABLE)
+    retailer = models.OneToOneField('retailers.retailer', on_delete=models.CASCADE, **NULLABLE)
     objects = models.Manager()
 
     def __str__(self):
@@ -97,7 +49,7 @@ class Suppliers1(models.Model):
 
 class Suppliers2(models.Model):
     factory = models.OneToOneField('factory', on_delete=models.CASCADE, **NULLABLE)
-    businessman = models.OneToOneField('businessman', on_delete=models.CASCADE, **NULLABLE)
+    businessman = models.OneToOneField('businessmen.businessman', on_delete=models.CASCADE, **NULLABLE)
     objects = models.Manager()
 
     def __str__(self):
@@ -110,7 +62,7 @@ class Suppliers2(models.Model):
 class Product(models.Model):
     name = models.CharField(max_length=35, verbose_name='название')
     model = models.CharField(max_length=50, verbose_name='модель')
-    manufacturer = models.ForeignKey('factory', on_delete=models.CASCADE, verbose_name='производитель')
+    manufacturer = models.ForeignKey('factory', on_delete=models.CASCADE, verbose_name='производитель', **NULLABLE)
     release_date = models.DateTimeField(verbose_name='дата выхода продукта')
 
     class Meta:

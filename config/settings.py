@@ -43,6 +43,8 @@ INSTALLED_APPS = [
 
     'employers',
     'chain',
+    'retailers',
+    'businessmen',
     'rest_framework',
     'django_filters',
     'rest_framework_simplejwt',
