@@ -31,11 +31,11 @@ class BusinessmanAdmin(admin.ModelAdmin):
         )
 
     def supplier_link(self, obj):
-        if obj.supplier.factory is not None:
+        if obj.supplier is not None and obj.supplier.factory is not None:
             url = reverse("admin:chain_factory_change", args=[obj.supplier.factory.id])
             link = '<a href="%s">%s</a>' % (url, obj.supplier.factory.name)
             return mark_safe(link)
-        else:
+        elif obj.supplier is not None and obj.supplier.retailer is not None:
             url = reverse("admin:retailers_retailer_change", args=[obj.supplier.retailer.id])
             link = '<a href="%s">%s</a>' % (url, obj.supplier.retailer.name)
             return mark_safe(link)

@@ -1,7 +1,7 @@
 from django.core.exceptions import ValidationError
 from django.db import models
 
-from chain.models import AbstractChain, Suppliers1, Suppliers2
+from chain.models import AbstractChain, Suppliers1, Suppliers2, AbstractProduct
 from employers.models import NULLABLE
 
 
@@ -9,7 +9,6 @@ from employers.models import NULLABLE
 class Businessman(AbstractChain):
     supplier = models.ForeignKey('chain.Suppliers1', on_delete=models.CASCADE, verbose_name='поставщик', **NULLABLE)
     debt = models.FloatField(verbose_name='долг перед поставщиком')
-    objects = models.Manager()
 
     def __str__(self):
         return self.name
@@ -32,13 +31,5 @@ class Businessman(AbstractChain):
         verbose_name_plural = 'предприниматели'
 
 
-class Product(models.Model):
-    name = models.CharField(max_length=35, verbose_name='название')
-    model = models.CharField(max_length=50, verbose_name='модель')
+class Product(AbstractProduct):
     seller = models.ForeignKey('businessman', on_delete=models.CASCADE, verbose_name='предприниматель', **NULLABLE)
-    release_date = models.DateTimeField(verbose_name='дата выхода продукта')
-
-    class Meta:
-        verbose_name = 'продукт'
-        verbose_name_plural = 'продукты'
-

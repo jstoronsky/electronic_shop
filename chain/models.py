@@ -12,9 +12,22 @@ class AbstractChain(models.Model):
     street = models.CharField(max_length=40, verbose_name='адрес')
     building = models.IntegerField(verbose_name='номер дома')
     created = models.DateTimeField(auto_now_add=True, verbose_name='дата создания')
+    objects = models.Manager()
 
     class Meta:
         abstract = True
+
+
+class AbstractProduct(models.Model):
+    name = models.CharField(max_length=35, verbose_name='название')
+    model = models.CharField(max_length=50, verbose_name='модель')
+    release_date = models.DateTimeField(verbose_name='дата выхода продукта')
+    objects = models.Manager()
+
+    class Meta:
+        abstract = True
+        verbose_name = 'продукт'
+        verbose_name_plural = 'продукты'
 
 
 class Factory(AbstractChain):
@@ -59,12 +72,5 @@ class Suppliers2(models.Model):
             return self.businessman.name
 
 
-class Product(models.Model):
-    name = models.CharField(max_length=35, verbose_name='название')
-    model = models.CharField(max_length=50, verbose_name='модель')
+class Product(AbstractProduct):
     manufacturer = models.ForeignKey('factory', on_delete=models.CASCADE, verbose_name='производитель', **NULLABLE)
-    release_date = models.DateTimeField(verbose_name='дата выхода продукта')
-
-    class Meta:
-        verbose_name = 'продукт'
-        verbose_name_plural = 'продукты'

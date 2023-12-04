@@ -38,7 +38,9 @@ schema_view = get_schema_view(
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('employers/', include('employers.urls', namespace='users')),
-    # path('api/', include('factory.urls', namespace='factory')),
+    path('api/', include('chain.urls', namespace='factories')),
+    path('api2/', include('retailers.urls', namespace='retailers')),
+    path('api3/', include('businessmen.urls', namespace='businessmen')),
     path('docs/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     # path('auth/', include('djoser.urls')),
     # path('auth/', include('djoser.urls.jwt')),

@@ -12,7 +12,6 @@ class UserCreateAPIView(generics.CreateAPIView):
     """
     Эндпоинт для регистрации пользователя
     """
-    permission_classes = [IsAuthenticated, IsSuperUser]
     serializer_class = UserSerializer
 
 
