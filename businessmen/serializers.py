@@ -28,3 +28,4 @@ class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = '__all__'
+        ref_name = 'product_businessman'
