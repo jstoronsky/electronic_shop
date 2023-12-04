@@ -1,5 +1,3 @@
-# from django.contrib.contenttypes.fields import GenericForeignKey
-# from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ValidationError
 from django.db import models
 from employers.models import NULLABLE
@@ -39,19 +37,8 @@ class Factory(AbstractChain):
 
 
 class Retailer(AbstractChain):
-    # factory = models.ForeignKey('factory', on_delete=models.CASCADE,
-    #                             verbose_name='поставщик(завод)', **NULLABLE)
-    # individual = models.ForeignKey('individual_ent.Individual', on_delete=models.CASCADE,
-    #                                verbose_name='поставщик(предприниматель)', **NULLABLE)
-    # object_id = models.CharField(max_length=100, null=True, blank=True, verbose_name='id поставщика')
-    # supplier_type = models.ForeignKey(
-    #     ContentType, on_delete=models.CASCADE, null=True, blank=True,
-    #     limit_choices_to=(models.Q(model__in=['factory', 'businessman'])), verbose_name='тип постащика')
-    # supply = GenericForeignKey('supplier_type', 'object_id')
     supplier = models.ForeignKey('suppliers2', on_delete=models.CASCADE, verbose_name='поставщик(завод)', **NULLABLE)
     debt = models.FloatField(verbose_name='долг перед поставщиком')
-
-    # supply.short_description = 'поставщик'
 
     def clean(self):
         for supplier in Suppliers2.objects.all():
@@ -74,8 +61,6 @@ class Retailer(AbstractChain):
 
 class Businessman(AbstractChain):
     supplier = models.ForeignKey('suppliers1', on_delete=models.CASCADE, verbose_name='поставщик(завод)', **NULLABLE)
-    # individual = models.ForeignKey('individual_ent.Individual', on_delete=models.CASCADE,
-    #                                verbose_name='поставщик(предприниматель)', **NULLABLE)
     debt = models.FloatField(verbose_name='долг перед поставщиком')
     objects = models.Manager()
 
